@@ -1,5 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import "package:firebase_auth/firebase_auth.dart";
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -11,6 +11,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+
   @override
   void initState() {
     _email = TextEditingController();
@@ -34,20 +35,22 @@ class _LoginViewState extends State<LoginView> {
       body: Column(
         children: [
           TextField(
-            decoration:
-                const InputDecoration(hintText: 'Please enter your email'),
             controller: _email,
-            autocorrect: false,
             enableSuggestions: false,
+            autocorrect: false,
             keyboardType: TextInputType.emailAddress,
+            decoration: const InputDecoration(
+              hintText: 'Enter your email here',
+            ),
           ),
           TextField(
-            decoration:
-                const InputDecoration(hintText: 'Please enter your password'),
             controller: _password,
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
+            decoration: const InputDecoration(
+              hintText: 'Enter your password here',
+            ),
           ),
           TextButton(
             onPressed: () async {
@@ -61,10 +64,10 @@ class _LoginViewState extends State<LoginView> {
                 );
                 print(userCredential);
               } on FirebaseAuthException catch (e) {
-                if (e.code == "user-not-found") {
-                  print('user not found');
-                } else if (e.code == "wrong-password") {
-                  print("wrong password");
+                if (e.code == 'user-not-found') {
+                  print('User not found');
+                } else if (e.code == 'wrong-password') {
+                  print('Wrong password');
                 }
               }
             },
@@ -72,10 +75,12 @@ class _LoginViewState extends State<LoginView> {
           ),
           TextButton(
             onPressed: () {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/register/', (route) => false);
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/register/',
+                (route) => false,
+              );
             },
-            child: const Text("Don't have an account yet?"),
+            child: const Text('Not registered yet? Register here!'),
           )
         ],
       ),
