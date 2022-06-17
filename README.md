@@ -1,6 +1,6 @@
 # test-mynotes-flutter-course
 
-A new Flutter project.
+This is the repository for the 'My Notes' app I coded during this Flutter Course https://www.youtube.com/watch?v=VPvVD8t02U8
 
 ## Getting Started
 
