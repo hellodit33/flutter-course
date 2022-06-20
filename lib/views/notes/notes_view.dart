@@ -13,21 +13,14 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
-
   late final NotesService _notesService;
-  
-String get userEmail => AuthService.firebase().currentUser!.email!;
 
-@override
+  String get userEmail => AuthService.firebase().currentUser!.email!;
+
+  @override
   void initState() {
     _notesService = NotesService();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    _notesService.close();
-    super.dispose();
   }
 
   @override
@@ -36,10 +29,11 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
       appBar: AppBar(
         title: const Text('My Notes'),
         actions: [
-          IconButton(onPressed: () {
-Navigator.of(context).pushNamed(newNoteRoute);
-          },
-          icon: const Icon(Icons.add)),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(newNoteRoute);
+              },
+              icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
@@ -66,26 +60,41 @@ Navigator.of(context).pushNamed(newNoteRoute);
         ],
       ),
       body: FutureBuilder(
-        future: _notesService.getOrCreateUser(email:userEmail),
+        future: _notesService.getOrCreateUser(email: userEmail),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-          return StreamBuilder(stream: _notesService.allNotes,
-          builder: (context, snapshot) {
-            switch(snapshot.connectionState) {
-              
-             
-              case ConnectionState.waiting:
-                            case ConnectionState.active:
+              return StreamBuilder(
+                  stream: _notesService.allNotes,
+                  builder: (context, snapshot) {
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                      case ConnectionState.active:
+                        if (snapshot.hasData) {
+                          final allNotes = snapshot.data as List<DatabaseNote>;
+                          print(allNotes);
+                          return ListView.builder(
+                              itemCount: allNotes.length,
+                              itemBuilder: (context, index){
+                              final note = allNotes[index];
+return ListTile(
+  title: Text(note.text,   maxLines:1, softWrap: true, overflow: TextOverflow.ellipsis,
+),
+  tileColor: Colors.blue,
+  );
 
-                return const Text('waiting for all notes');
-              default:
+  
+                            },);
+                        } else {
+                          return const CircularProgressIndicator();
+                        }
+                      default:
+                        return const CircularProgressIndicator();
+                    }
+                  });
+            default:
               return const CircularProgressIndicator();
-            }
-          });
-          default:
-          return const CircularProgressIndicator();
-        }
+          }
         },
       ),
     );
