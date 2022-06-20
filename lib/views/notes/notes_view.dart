@@ -76,6 +76,8 @@ Navigator.of(context).pushNamed(newNoteRoute);
               
              
               case ConnectionState.waiting:
+                            case ConnectionState.active:
+
                 return const Text('waiting for all notes');
               default:
               return const CircularProgressIndicator();
