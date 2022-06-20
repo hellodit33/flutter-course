@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hint/services/crud/notes_service.dart';
 
-import '../constants/routes.dart';
-import '../enums/menu_action.dart';
-import '../services/auth/auth_service.dart';
+import '../../constants/routes.dart';
+import '../../enums/menu_action.dart';
+import '../../services/auth/auth_service.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
@@ -21,7 +21,6 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
 @override
   void initState() {
     _notesService = NotesService();
-    _notesService.open();
     super.initState();
   }
 
@@ -37,6 +36,10 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
       appBar: AppBar(
         title: const Text('My Notes'),
         actions: [
+          IconButton(onPressed: () {
+Navigator.of(context).pushNamed(newNoteRoute);
+          },
+          icon: const Icon(Icons.add)),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
               switch (value) {
@@ -67,7 +70,17 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-          return const Text('Your notes will appear here');
+          return StreamBuilder(stream: _notesService.allNotes,
+          builder: (context, snapshot) {
+            switch(snapshot.connectionState) {
+              
+             
+              case ConnectionState.waiting:
+                return const Text('waiting for all notes');
+              default:
+              return const CircularProgressIndicator();
+            }
+          });
           default:
           return const CircularProgressIndicator();
         }
