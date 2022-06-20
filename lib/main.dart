@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:hint/constants/routes.dart';
-import 'package:hint/firebase_options.dart';
 import 'package:hint/services/auth/auth_service.dart';
 import 'package:hint/views/login_view.dart';
 import 'package:hint/views/notes_view.dart';
