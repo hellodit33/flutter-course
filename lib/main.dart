@@ -18,14 +18,12 @@ void main() {
         primarySwatch: Colors.purple,
       ),
       home: const HomePage(),
-      routes: {
+    routes: {
         loginRoute: (context) => const LoginView(),
         registerRoute: (context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
-                createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
-
         verifyEmailRoute: (context) => const VerifyEmailView(),
-
+        createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     ),
   );
