@@ -1,8 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
-import 'loading_screen_controller.dart';
+import 'package:hint/helpers/loading/loading_screen_controller.dart';
 
 class LoadingScreen {
   factory LoadingScreen() => _shared;
@@ -11,16 +10,19 @@ class LoadingScreen {
 
   LoadingScreenController? controller;
 
-void show({
-  required BuildContext context,
-  required String text,
-}) {
-  if(controller?.update(text) ?? false) {
-    return;
-  } else {
-    controller = showOverlay(context: context, text: text );
+  void show({
+    required BuildContext context,
+    required String text,
+  }) {
+    if (controller?.update(text) ?? false) {
+      return;
+    } else {
+      controller = showOverlay(
+        context: context,
+        text: text,
+      );
+    }
   }
-}
 
   void hide() {
     controller?.close();
@@ -56,22 +58,29 @@ void show({
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: SingleChildScrollView(
-                      child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 10),
-                      const CircularProgressIndicator(),
-                      const SizedBox(height: 20),
-                      StreamBuilder(builder: (context, snapshot) {
-                        if(snapshot.hasData) {
-                          return Text(snapshot.data as String, textAlign: TextAlign.center,);
-                        } else {
-                          return Container();
-                        }
-                      }, stream: _text.stream)
-                    ]
-                  )),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(height: 10),
+                        const CircularProgressIndicator(),
+                        const SizedBox(height: 20),
+                        StreamBuilder(
+                          stream: _text.stream,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return Text(
+                                snapshot.data as String,
+                                textAlign: TextAlign.center,
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 )),
           ),
         );
@@ -80,15 +89,16 @@ void show({
 
     state?.insert(overlay);
 
-    return LoadingScreenController(close: () {
-      _text.close();
-      overlay.remove();
-      return true;
-    }, update: (text) {
-      _text.add(text);
-      return true;
-    },);
+    return LoadingScreenController(
+      close: () {
+        _text.close();
+        overlay.remove();
+        return true;
+      },
+      update: (text) {
+        _text.add(text);
+        return true;
+      },
+    );
   }
-
-
 }

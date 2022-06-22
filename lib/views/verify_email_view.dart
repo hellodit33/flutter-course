@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hint/constants/routes.dart';
+import 'package:hint/services/auth/auth_service.dart';
+import 'package:hint/services/auth/bloc/auth_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hint/services/auth/bloc/auth_event.dart';
 
-import '../services/auth/auth_service.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-
-
-import '../services/auth/bloc/auth_bloc.dart';class VerifyEmailView extends StatefulWidget {
+class VerifyEmailView extends StatefulWidget {
   const VerifyEmailView({Key? key}) : super(key: key);
 
   @override
@@ -23,19 +21,23 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
       ),
       body: Column(
         children: [
-          const Text("We've sent you an email verification. Please open it in order to verify your account."),
-          const Text("If you haven't received a verification email yet, press the button below"),
+          const Text(
+              "We've sent you an email verification. Please open it to verify your account."),
+          const Text(
+              "If you haven't received a verification email yet, press the button below"),
           TextButton(
             onPressed: () {
-          context.read<AuthBloc>().add(const AuthEventSendEmailVerification());
+              context.read<AuthBloc>().add(
+                    const AuthEventSendEmailVerification(),
+                  );
             },
             child: const Text('Send email verification'),
           ),
           TextButton(
             onPressed: () async {
-                       context.read<AuthBloc>().add(const AuthEventLogOut());
-
-
+              context.read<AuthBloc>().add(
+                    const AuthEventLogOut(),
+                  );
             },
             child: const Text('Restart'),
           )

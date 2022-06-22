@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hint/constants/routes.dart';
 import 'package:hint/enums/menu_action.dart';
 import 'package:hint/services/auth/auth_service.dart';
+import 'package:hint/services/auth/bloc/auth_bloc.dart';
+import 'package:hint/services/auth/bloc/auth_event.dart';
 import 'package:hint/services/cloud/cloud_note.dart';
 import 'package:hint/services/cloud/firebase_cloud_storage.dart';
 import 'package:hint/utilities/dialogs/logout_dialog.dart';
 import 'package:hint/views/notes/notes_list_view.dart';
-
-import '../../services/auth/bloc/auth_bloc.dart';
-import '../../services/auth/bloc/auth_event.dart';
+import 'package:flutter_bloc/flutter_bloc.dart' show ReadContext;
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);

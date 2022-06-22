@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 typedef CloseDialog = void Function();
 
-CloseDialog showLoadingDialog(
-    {required BuildContext context, required String text}) {
+CloseDialog showLoadingDialog({
+  required BuildContext context,
+  required String text,
+}) {
   final dialog = AlertDialog(
     content: Column(
       mainAxisSize: MainAxisSize.min,
